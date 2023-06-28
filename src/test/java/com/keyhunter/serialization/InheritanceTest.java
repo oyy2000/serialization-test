@@ -4,12 +4,12 @@ import com.keyhunter.serialization.inheritance.SubClass;
 import com.keyhunter.test.serialization.Serializer;
 import com.keyhunter.test.serialization.jdk.JdkSerializer;
 import com.keyhunter.test.serialization.json.FastJSONSerializer;
-import com.keyhunter.test.serialization.protobuffer.ProtoBufferSerializer;
+import com.keyhunter.test.serialization.protobuffer.ProtobufSerializer;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @auther yingren
+ * @author yingren
  * Created on 2016/12/26.
  */
 public class InheritanceTest {
@@ -32,7 +32,7 @@ public class InheritanceTest {
         Assert.assertNotNull(deserialize.getSuperName());
         Assert.assertNotNull(deserialize.getSubName());
         //proto
-        Serializer protoBufferSerializer = new ProtoBufferSerializer();
+        Serializer protoBufferSerializer = new ProtobufSerializer();
         serialize = protoBufferSerializer.serialize(subClass);
         deserialize = protoBufferSerializer.deserialize(serialize, SubClass.class);
         Assert.assertNotNull(deserialize.getSuperName());

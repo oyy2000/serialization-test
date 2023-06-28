@@ -3,7 +3,7 @@ package com.keyhunter.test.serialization;
 import java.text.DecimalFormat;
 
 /**
- * @auther yingren
+ * @author yingren
  * Created on 2017/2/23.
  */
 public class Statistics {
@@ -31,6 +31,8 @@ public class Statistics {
      */
     private long avgSerializeCostTime;
 
+    private double avgSerializeCostTimeComparison;
+
     /**
      * max serialize cost time
      * UNIT:ns
@@ -48,6 +50,27 @@ public class Statistics {
      * UNIT:ns
      */
     private long avgDeserializeCostTime;
+    private double avgDeserializeCostTimeComparison;
+
+    private long avgTotalCostTime;
+
+    public long getAvgTotalCostTime() {
+        return avgTotalCostTime;
+    }
+
+    public void setAvgTotalCostTime(long avgTotalCostTime) {
+        this.avgTotalCostTime = avgTotalCostTime;
+    }
+
+    public double getAvgTotalCostTimeComparison() {
+        return avgTotalCostTimeComparison;
+    }
+
+    public void setAvgTotalCostTimeComparison(double avgTotalCostTimeComparison) {
+        this.avgTotalCostTimeComparison = avgTotalCostTimeComparison;
+    }
+
+    private double avgTotalCostTimeComparison;
 
     /**
      * size
@@ -55,7 +78,33 @@ public class Statistics {
      */
     private int size;
 
-    private final static String SPLITOR = " ";
+    public double getAvgSerializeCostTimeComparison() {
+        return avgSerializeCostTimeComparison;
+    }
+
+    public void setAvgSerializeCostTimeComparison(double avgSerializeCostTimeComparison) {
+        this.avgSerializeCostTimeComparison = avgSerializeCostTimeComparison;
+    }
+
+    public double getAvgDeserializeCostTimeComparison() {
+        return avgDeserializeCostTimeComparison;
+    }
+
+    public void setAvgDeserializeCostTimeComparison(double avgDeserializeCostTimeComparison) {
+        this.avgDeserializeCostTimeComparison = avgDeserializeCostTimeComparison;
+    }
+
+    public double getSizeComparison() {
+        return sizeComparison;
+    }
+
+    public void setSizeComparison(double sizeComparison) {
+        this.sizeComparison = sizeComparison;
+    }
+
+    private double sizeComparison;
+
+    private final static String SPLITOR = " |";
     private final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#########");
     private final static int NUMBER_FIX_LENGTH = 9;
     private final static int STRING_FIX_LENGTH = 22;
@@ -132,27 +181,53 @@ public class Statistics {
         this.size = size;
     }
 
+    private String toPercentage(double value) {
+        // 控制double显示两位小数
+        return toNumberFixLength(new DecimalFormat("##.##").format(value * 100) + "%");
+    }
     @Override
     public String toString() {
-        return toStringFixLength(name) + SPLITOR + toMillSecondsString(avgSerializeCostTime) + SPLITOR + toMillSecondsString(minSerializeCostTime) + SPLITOR + toMillSecondsString(maxSerializeCostTime) + SPLITOR
-                + toMillSecondsString(avgDeserializeCostTime) + SPLITOR + toMillSecondsString(minDeserializeCostTime) + SPLITOR + toMillSecondsString(maxDeserializeCostTime) + SPLITOR
-                + toNumberFixLength(size + "");
-
+        // make the avgSerializeCostTimeComparison to be displayed like percentage
+        return toStringFixLength(name)
+                + SPLITOR + toMillSecondsString(avgSerializeCostTime)
+                + SPLITOR + toPercentage(avgSerializeCostTimeComparison)
+                + SPLITOR + toMillSecondsString(minSerializeCostTime)
+                + SPLITOR + toMillSecondsString(maxSerializeCostTime)
+                + SPLITOR + toMillSecondsString(avgDeserializeCostTime)
+                + SPLITOR + toPercentage(avgDeserializeCostTimeComparison)
+                + SPLITOR + toMillSecondsString(minDeserializeCostTime)
+                + SPLITOR + toMillSecondsString(maxDeserializeCostTime)
+                + SPLITOR + toMillSecondsString(avgTotalCostTime)
+                + SPLITOR + toPercentage(avgTotalCostTimeComparison)
+                + SPLITOR + toNumberFixLength(String.valueOf(size))
+                + SPLITOR + toPercentage(sizeComparison);
     }
 
     public static String header() {
-        return toStringFixLength("name") + SPLITOR + toNumberFixLength("avgSer") + SPLITOR +
-                toNumberFixLength("minSer") + SPLITOR + toNumberFixLength("maxSer") + SPLITOR
-                + toNumberFixLength("avgDeser") + SPLITOR + toNumberFixLength("minDeser")
-                + SPLITOR + toNumberFixLength("maxDeser") + SPLITOR + toNumberFixLength("size");
+        return toStringFixLength("name")
+                + SPLITOR + toNumberFixLength("avgSer")
+                + SPLITOR + toPercentageFixLength("ser%")
+                + SPLITOR + toNumberFixLength("minSer")
+                + SPLITOR + toNumberFixLength("maxSer")
+                + SPLITOR + toNumberFixLength("avgDeser")
+                + SPLITOR + toPercentageFixLength("dser%")
+                + SPLITOR + toNumberFixLength("minDeser")
+                + SPLITOR + toNumberFixLength("maxDeser")
+                + SPLITOR + toNumberFixLength("TotalTime")
+                + SPLITOR + toPercentageFixLength("total%")
+                + SPLITOR + toNumberFixLength("size")
+                + SPLITOR + toPercentageFixLength("size%");
     }
-
 
     private String toMillSecondsString(long nanoMills) {
         return toNumberFixLength(DECIMAL_FORMAT.format(nanoMills));
     }
 
     private static String toNumberFixLength(String s) {
+        return toFixLength(s, NUMBER_FIX_LENGTH);
+    }
+
+    private static String toPercentageFixLength(String s) {
         return toFixLength(s, NUMBER_FIX_LENGTH);
     }
 

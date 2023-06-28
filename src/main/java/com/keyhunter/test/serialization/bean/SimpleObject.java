@@ -1,10 +1,7 @@
 package com.keyhunter.test.serialization.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yingren on 2016/12/2.
@@ -37,10 +34,6 @@ public class SimpleObject implements Serializable {
 
     public SimpleObject() {
 
-    }
-
-    public SimpleObject(String name) {
-        this.name = name;
     }
 
     public String getName() {

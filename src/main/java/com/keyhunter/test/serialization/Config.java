@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * The config for serialize test.
  *
- * @auther yingren
+ * @author yingren
  * Created on 2017/2/23.
  */
 public class Config {
@@ -14,6 +14,19 @@ public class Config {
      * statistics loop size
      */
     private int loopSize;
+
+    public int getOuterLoopSize() {
+        return outerLoopSize;
+    }
+
+    public void setOuterLoopSize(int outerLoopSize) {
+        this.outerLoopSize = outerLoopSize;
+    }
+
+    /**
+     * outer loop size
+     */
+    private int outerLoopSize;
 
     /**
      * target obj to serialize and deserialize;
@@ -50,5 +63,10 @@ public class Config {
         this.nameSuffix = nameSuffix;
     }
 
-
+    @Override
+    public String toString() {
+        return "Config: " +
+                "loopSize = " + loopSize +
+                ", outerLoopSize = " + outerLoopSize;
+    }
 }
